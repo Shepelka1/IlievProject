@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "gbL4NBif69oxdKu2vUeZ2Ky5iaxz18vC5MVWZlY1UolfHFdW65nJyb3P2ULLS+fe4D7RlRW9E6/bK3ny4YnkWw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ishep\\Documents\\GitHub\\IlievProject\\BusinessLayer\\BusinessLayer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ishep\\.nuget\\packages\\microsoft.win32.systemevents\\7.0.0\\microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+    "C:\\Users\\ishep\\.nuget\\packages\\system.drawing.common\\7.0.0\\system.drawing.common.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
