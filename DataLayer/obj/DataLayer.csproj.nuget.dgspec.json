@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ishep\\Documents\\GitHub\\IlievProject\\DataLayer\\DataLayer.csproj": {}
+    "D:\\GITHUBstuff\\Projects\\IlievProject\\DataLayer\\DataLayer.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ishep\\Documents\\GitHub\\IlievProject\\BusinessLayer\\BusinessLayer.csproj": {
+    "D:\\GITHUBstuff\\Projects\\IlievProject\\BusinessLayer\\BusinessLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ishep\\Documents\\GitHub\\IlievProject\\BusinessLayer\\BusinessLayer.csproj",
+        "projectUniqueName": "D:\\GITHUBstuff\\Projects\\IlievProject\\BusinessLayer\\BusinessLayer.csproj",
         "projectName": "BusinessLayer",
-        "projectPath": "C:\\Users\\ishep\\Documents\\GitHub\\IlievProject\\BusinessLayer\\BusinessLayer.csproj",
-        "packagesPath": "C:\\Users\\ishep\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ishep\\Documents\\GitHub\\IlievProject\\BusinessLayer\\obj\\",
+        "projectPath": "D:\\GITHUBstuff\\Projects\\IlievProject\\BusinessLayer\\BusinessLayer.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "D:\\GITHUBstuff\\Projects\\IlievProject\\BusinessLayer\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ishep\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -61,21 +66,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\ishep\\Documents\\GitHub\\IlievProject\\DataLayer\\DataLayer.csproj": {
+    "D:\\GITHUBstuff\\Projects\\IlievProject\\DataLayer\\DataLayer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ishep\\Documents\\GitHub\\IlievProject\\DataLayer\\DataLayer.csproj",
+        "projectUniqueName": "D:\\GITHUBstuff\\Projects\\IlievProject\\DataLayer\\DataLayer.csproj",
         "projectName": "DataLayer",
-        "projectPath": "C:\\Users\\ishep\\Documents\\GitHub\\IlievProject\\DataLayer\\DataLayer.csproj",
-        "packagesPath": "C:\\Users\\ishep\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ishep\\Documents\\GitHub\\IlievProject\\DataLayer\\obj\\",
+        "projectPath": "D:\\GITHUBstuff\\Projects\\IlievProject\\DataLayer\\DataLayer.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "D:\\GITHUBstuff\\Projects\\IlievProject\\DataLayer\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ishep\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -83,14 +92,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\ishep\\Documents\\GitHub\\IlievProject\\BusinessLayer\\BusinessLayer.csproj": {
-                "projectPath": "C:\\Users\\ishep\\Documents\\GitHub\\IlievProject\\BusinessLayer\\BusinessLayer.csproj"
+              "D:\\GITHUBstuff\\Projects\\IlievProject\\BusinessLayer\\BusinessLayer.csproj": {
+                "projectPath": "D:\\GITHUBstuff\\Projects\\IlievProject\\BusinessLayer\\BusinessLayer.csproj"
               }
             }
           }
@@ -136,7 +146,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
         }
       }
     }
