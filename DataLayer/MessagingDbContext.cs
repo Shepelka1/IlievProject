@@ -18,7 +18,7 @@ namespace DataLayer
             //set connection string here and maybe in json
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=LAPTOP-AT94SBBO\\SQLEXPRESS;Database=Library11J;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer(@"Server=localhost\SQLEXPRESS; Database=MessagingDb;Trusted_Connection=True;");
             }
             base.OnConfiguring(optionsBuilder);
         }

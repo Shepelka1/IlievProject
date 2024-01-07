@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace BusinessLayer
         [Required]
         [MaxLength(50, ErrorMessage = "Group name must be less than 50 characters")]
         public string Name { get; set; }
-        public Bitmap CoverImage { get; set; }
+        public byte[] CoverImage { get; set; }
         public List<User> Users { get; set; }
         public List<TextMessage> TextMessages { get; set; }
         public Group()
@@ -25,7 +26,7 @@ namespace BusinessLayer
             TextMessages = new();
         }
 
-        public Group(int id, string name, Bitmap coverImage, List<User> users, List<TextMessage> textMessages)
+        public Group(int id, string name, byte[] coverImage, List<User> users, List<TextMessage> textMessages)
         {
             Id = id;
             Name = name;

@@ -1,0 +1,50 @@
+﻿@page "/users/create"
+@using BlazorView.Services;
+@using MudBlazor;
+@using BusinessLayer;
+@using ServiceLayer;
+@using MudBlazor.Services;
+@inject UserManager userManager;
+@inject NavigationManager navigationManager;
+
+<h1>Create</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <MudForm Model="Model">
+            <div class="form-group">
+                <MudTextField @bind-value="Model.Username" 
+                              T="string" class="form-control" 
+                              Label="Username" 
+                              Variant="Variant.Outlined" 
+                              For="@( () => Model.Username )" />
+            </div>
+            <div class="form-group">
+                 <MudButton Variant="Variant.Filled" 
+                            StartIcon="@Icons.Material.Filled.Save" 
+                            IconColor="Color.Primary" 
+                            Size="Size.Large"
+                            OnClick="CreateUser">Save</MudButton>
+            </div>
+        </MudForm>
+    </div>
+</div>
+
+ <div class="form-group">
+     <MudButton Variant="Variant.Filled"
+                IconColor="Color.Secondary"
+                Size="Size.Large"
+                Href="users">Back</MudButton>
+ </div>
+
+ @code {
+    User Model = new();
+
+    private async Task CreateUser()
+    {
+        await userManager.CreateAsync(Model);
+        navigationManager.NavigateTo("users", true);
+    }
+}

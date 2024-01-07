@@ -87,7 +87,7 @@ namespace DataLayer
                 User userFromDb = await ReadAsync(item.Id, useNavigationalProperties, false);
 
 
-                userFromDb.Userame = item.Userame;
+                userFromDb.Username = item.Username;
                 userFromDb.ProfilePicture = item.ProfilePicture;
                 userFromDb.Password = item.Password;
                 userFromDb.Status = item.Status;

@@ -1,0 +1,78 @@
+﻿@page "/users"
+@using BlazorView.Services;
+@using BusinessLayer;
+@using ServiceLayer;
+@inject UserManager userManager;
+@inject NavigationManager navigationManager;
+@inject StateContainer<User> userContainer;
+
+<h1>Users</h1>
+
+<p>
+    <a href="users/create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Username
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model == null)
+        {
+            <tr><td>Loading...</td></tr>
+        }
+        else
+        {
+            @foreach (User item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Username
+                    </td>
+                    <td>
+                        <a href="users/edit" @onclick="(() => SetUser(item))">Edit</a> |
+                        <a href="users/details" @onclick="(() => SetUser(item))">Details</a> |
+                        <a href="users/delete" @onclick="(() => SetUser(item))">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@code {
+    ICollection<User> Model;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadBooks();
+    }
+
+    async Task LoadBooks()
+    {
+        Model = await userManager.ReadAllAsync(true, false);
+    }
+
+    void SetUser(User user)
+    {
+        userContainer.SetValue(user);
+    }
+
+    async Task OnDelete(int id)
+    {
+        try
+        {
+            await userManager.DeleteAsync(id);
+            await LoadBooks();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+}

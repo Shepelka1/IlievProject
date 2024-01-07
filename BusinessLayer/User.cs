@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
 using System.Text.RegularExpressions;
 
@@ -11,12 +12,12 @@ namespace BusinessLayer
 
         [Required]
         [MaxLength(20, ErrorMessage = "Username is too long")]
-        public string Userame { get; set; }
+        public string Username { get; set; }
 
         [Required]
         [MinLength(8, ErrorMessage = "Password must be at least 8 characters")]
         public int Password { get; set; }
-        public Bitmap ProfilePicture { get; set; }
+        public byte[] ProfilePicture { get; set; }
         public List<Group> Groups { get; set; }
         public List<TextMessage> TextMessages { get; set; }
         public Status Status { get; set; }
@@ -27,10 +28,10 @@ namespace BusinessLayer
             TextMessages = new();
         }
 
-        public User(int id, string userame, int password, Bitmap profilePicture, Status status, List<Group> groups, List<TextMessage> textMessages)
+        public User(int id, string username, int password, byte[] profilePicture, Status status, List<Group> groups, List<TextMessage> textMessages)
         {
             Id = id;
-            Userame = userame;
+            Username = username;
             Password = password;
             ProfilePicture = profilePicture;
             Status = status;

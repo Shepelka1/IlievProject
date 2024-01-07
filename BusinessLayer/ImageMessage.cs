@@ -13,7 +13,7 @@ namespace BusinessLayer
     {
        
         [Required]
-        public Bitmap Image { get; set; }
+        public byte[] Image { get; set; }
         public string Description { get; set; }
         
         public ImageMessage()  
@@ -21,7 +21,7 @@ namespace BusinessLayer
 
         }
 
-        public ImageMessage(int id, Bitmap image, string description, User sender, Group group):base(id, sender, group)
+        public ImageMessage(int id, byte[] image, string description, User sender, Group group):base(id, sender, group)
         {
             Image = image;
             Description = description;
