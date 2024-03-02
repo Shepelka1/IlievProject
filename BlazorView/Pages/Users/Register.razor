@@ -1,0 +1,60 @@
+﻿@page "/user/create"
+@using BusinessLayer;
+@using ServiceLayer;
+@using Services;
+@inject IdentityManager identityManager;
+@inject ErrorModel errorModel;
+@inject NavigationManager navigationManager;
+
+<h3>Create User</h3>
+
+<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="container">
+        <div class="form-row">
+            <div class="col-md-4">
+                <label for="name">Username</label>
+                <InputText id="name" class="form-control" @bind-Value="model.UserName " />
+            </div>
+            <div class="col-md-4">
+                <label for="password">Password</label>
+                <InputText class="form-control" id="password" type="password" @bind-Value="model.Password" />
+            </div>
+            <div class="col-md-4">
+                <label for="email">Email</label>
+                <InputText id="email" class="form-control" @bind-Value="model.Email"></InputText>
+            </div>
+        </div>
+        <div class="row">
+            <div class="md-1">
+                <button type="submit" class="btn border-dark mt-2 ml-3">Create</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code
+{
+    private User model = new();
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            await identityManager.CreateAsync(model);
+
+            navigationManager.NavigateTo("/", false);
+        }
+        catch (Exception ex) // Handle concrete exceptions first!
+        {
+            throw ex;
+        }
+    }
+
+}

@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\Data
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{4AF14D85-634C-4A18-8F48-F3B871FDC2CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLayer", "ServiceLayer\ServiceLayer.csproj", "{657BD316-2E76-4A9F-A5B0-C262D57B5E10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceLayer", "ServiceLayer\ServiceLayer.csproj", "{657BD316-2E76-4A9F-A5B0-C262D57B5E10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorView", "BlazorView\BlazorView.csproj", "{D07328B2-2BE0-42CC-8840-37C102C8D501}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorView", "BlazorView\BlazorView.csproj", "{D07328B2-2BE0-42CC-8840-37C102C8D501}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

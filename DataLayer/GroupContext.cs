@@ -38,7 +38,7 @@ namespace DataLayer
 
                 if (useNavigationalProperties)
                 {
-                    query.Include(g => g.TextMessages)
+                    query.Include(g => g.Messages)
                          .Include(g => g.Users);
                 }
 
@@ -63,7 +63,7 @@ namespace DataLayer
 
                 if (useNavigationalProperties)
                 {
-                    query.Include(g => g.TextMessages)
+                    query = query.Include(g => g.Messages)
                          .Include(g => g.Users);
                 }
 
@@ -104,7 +104,6 @@ namespace DataLayer
 
                     groupFromDb.Users = usersFromDb.Intersect(item.Users).ToList();
                 }
-                //^Моля господина да види този код дали става за нещо^
                 await dbContext.SaveChangesAsync();
             }
             catch (Exception)

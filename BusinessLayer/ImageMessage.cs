@@ -6,12 +6,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace BusinessLayer
 {
     public class ImageMessage : Message
     {
-       
         [Required]
         public byte[] Image { get; set; }
         public string Description { get; set; }
@@ -21,7 +21,7 @@ namespace BusinessLayer
 
         }
 
-        public ImageMessage(int id, byte[] image, string description, User sender, Group group):base(id, sender, group)
+        public ImageMessage(byte[] image, string description, User sender, Group group) : base(sender, group)
         {
             Image = image;
             Description = description;

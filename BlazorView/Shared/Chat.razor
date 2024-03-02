@@ -1,0 +1,128 @@
+﻿@page "/groups/chat/{Id:int}"
+@using BlazorView.Services;
+@using BusinessLayer;
+@using Microsoft.AspNetCore.Identity;
+@using MudBlazor
+@using ServiceLayer;
+@inject GroupManager groupManager;
+@inject IdentityManager identityManager;
+@inject UserManager<User> userManager;  
+@inject SignInManager<User> signInManager;
+@inject TextMessageManager textMessageManager;
+@inject NavigationManager navigationManager;
+@inject StateContainer<Group> groupContainer;
+@inject AuthenticationStateProvider authenticationState;
+
+<h1>@Model.Name</h1>
+
+<p>
+    <a href="groups/create">Create New</a>
+</p>
+<p>@(Id.ToString())</p>
+<table class="table">
+    <tbody>
+        @if (Model == null)
+        {
+            <tr><td>Loading...</td></tr>
+        }
+        else
+        {
+            @foreach (Message item in Model.Messages)
+            {
+                <tr>
+                    <td>
+                        @if (item is TextMessage)
+                        {
+                            TempTextMsg = (TextMessage)item;
+                            @TempTextMsg.Text;
+                        } else
+                        {
+                            TempImgMsg = (ImageMessage)item;
+                            @TempImgMsg.Description;
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<MudGrid>
+    <MudItem>
+        <MudForm>
+            <MudPaper>
+                <div class="col-md-5 col-sm-12">
+                    <MudTextField T="string" Label="Message" @bind-Value="TypedMessage"
+                                  ResetValueOnEmptyText="true"
+                                  CoerceText="true" CoerceValue="false"
+                                  Variant="Variant.Outlined"
+                                  Immediate="true" />
+                </div>
+                <div class="form-group">
+                    <MudButton Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.Save"
+                               IconColor="Color.Primary"
+                               Size="Size.Large"
+                               OnClick="SendMessage">Send</MudButton>
+                </div>
+            </MudPaper>
+        </MudForm>
+    </MudItem>
+</MudGrid>
+
+@code {
+    Group Model = new Group();
+
+    [Parameter]
+    public int Id { get; set; }
+
+    TextMessage TempTextMsg = new();
+
+    ImageMessage TempImgMsg = new();
+
+    string TypedMessage = null;
+
+    System.Security.Claims.ClaimsPrincipal User;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await UpdateModel();
+        //TextMessage msg = new("Nice try", null, Model);
+        //await textMessageManager.CreateAsync(msg);
+        var authState = await authenticationState.GetAuthenticationStateAsync();
+        User = authState.User;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await UpdateModel();
+    }
+
+    protected async Task UpdateModel()
+    {
+        Model = await groupManager.ReadAsync(Id, true, false);
+    }
+
+    void SetGroup(Group group)
+    {
+        groupContainer.SetValue(group);
+    }
+
+    async Task OnDelete(int id)
+    {
+        try
+        {
+            await groupManager.DeleteAsync(id);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    async Task SendMessage()
+    {
+        //await userManager.FindByNameAsync(User.Identity.Name)
+        TextMessage msg = new TextMessage(TypedMessage, null, Model);
+        Model.Messages.Add(msg);
+    }
+}

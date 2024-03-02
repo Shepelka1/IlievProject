@@ -22,6 +22,7 @@ namespace DataLayer
             try
             {
                 dbContext.TextMessages.Add(item);
+                //await dbContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT dbo.Messages ON;");
                 await dbContext.SaveChangesAsync();
             }
             catch (Exception)

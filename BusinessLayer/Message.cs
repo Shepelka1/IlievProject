@@ -18,20 +18,20 @@ namespace BusinessLayer
         public DateTime SentDateTime { get; set; }
 
         [ForeignKey("Sender")]
-        public int SenderId { get; set; }
+        public string SenderId { get; set; }
         public User Sender { get; set; }
 
         [ForeignKey("Group")]
-        public int GroupId { get; set; }
+        public int? GroupId { get; set; }
         public Group Group { get; set; }
+
         public Message ()  
         {   
 
         }
 
-        public Message(int id, User sender, Group group)
+        public Message(User sender, Group group)
         {
-            Id = id;
             SentDateTime = DateTime.Now;
             Sender = sender;
             Group = group;

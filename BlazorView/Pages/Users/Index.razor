@@ -2,7 +2,7 @@
 @using BlazorView.Services;
 @using BusinessLayer;
 @using ServiceLayer;
-@inject UserManager userManager;
+@inject IdentityManager identityManager;
 @inject NavigationManager navigationManager;
 @inject StateContainer<User> userContainer;
 
@@ -31,7 +31,7 @@
             {
                 <tr>
                     <td>
-                        @item.Username
+                        @item.UserName
                     </td>
                     <td>
                         <a href="users/edit" @onclick="(() => SetUser(item))">Edit</a> |
@@ -54,7 +54,7 @@
 
     async Task LoadBooks()
     {
-        Model = await userManager.ReadAllAsync(true, false);
+        Model = await identityManager.ReadAllAsync(true, false);
     }
 
     void SetUser(User user)
@@ -62,11 +62,11 @@
         userContainer.SetValue(user);
     }
 
-    async Task OnDelete(int id)
+    async Task OnDelete(string id)
     {
         try
         {
-            await userManager.DeleteAsync(id);
+            await identityManager.DeleteAsync(id);
             await LoadBooks();
         }
         catch (Exception)

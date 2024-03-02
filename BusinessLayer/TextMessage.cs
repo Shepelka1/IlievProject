@@ -10,7 +10,6 @@ namespace BusinessLayer
 {
     public class TextMessage : Message
     {
-       
         [Required]
         public string Text { get; set; }
        
@@ -19,8 +18,8 @@ namespace BusinessLayer
 
         }
 
-        public TextMessage(int id, string text, User sender, Group group):base(id,sender,group)
-        {            
+        public TextMessage(string text, User sender, Group group) : base(sender, group)
+        {   
             Text = text;
         }
     }

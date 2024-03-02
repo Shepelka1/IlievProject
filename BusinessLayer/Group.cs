@@ -19,20 +19,20 @@ namespace BusinessLayer
         public string Name { get; set; }
         public byte[] CoverImage { get; set; }
         public List<User> Users { get; set; }
-        public List<TextMessage> TextMessages { get; set; }
+        public List<Message> Messages { get; set; }
         public Group()
         {
             Users = new();
-            TextMessages = new();
+            Messages = new();
         }
 
-        public Group(int id, string name, byte[] coverImage, List<User> users, List<TextMessage> textMessages)
+        public Group(int id, string name, byte[] coverImage, List<User> users, List<Message> messages)
         {
             Id = id;
             Name = name;
             CoverImage = coverImage;
             Users = users;
-            TextMessages = textMessages;
+            Messages = messages;
         }
     }
 }

@@ -1,4 +1,11 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
+﻿@using BusinessLayer;
+@using Microsoft.AspNetCore.Identity;
+@using ServiceLayer;
+@inject GroupManager groupManager;
+@inject SignInManager<User> signInManager;
+@inject AuthenticationStateProvider authenticationStateProvider;
+
+<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="">BlazorView</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -19,13 +26,54 @@
                 <span class="oi oi-list-rich" aria-hidden="true"></span> Users
             </NavLink>
         </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="groups">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Groups
+            </NavLink>
+        </div>
+        @foreach(Group item in Groups)
+        {
+            <div class="nav-item px-3">
+                <a href ="groups/chat/@item.Id">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> @item.Name
+                </a>
+            </div>
+        }
+        <AuthorizeView>
+            <Authorized>
+                <p>Hello, @context.User.Identity?.Name!</p>
+            </Authorized>
+            <NotAuthorized>
+                <p>You're not authorized.</p>
+            </NotAuthorized>
+        </AuthorizeView>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="user/create">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Register
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="user/login">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Login
+            </NavLink>
+        </li>
     </nav>
 </div>
 
 @code {
+    public ICollection<Group> Groups = new List<Group>();
+
+    AuthenticationState authState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Groups = await groupManager.ReadAllAsync();
+        authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+    }
+
     private bool collapseNavMenu = true;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
     private void ToggleNavMenu()
     {

@@ -1,9 +1,10 @@
 ﻿using BusinessLayer;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataLayer
 {
-    public class MessagingDbContext : DbContext
+    public class MessagingDbContext : IdentityDbContext<User>
     {
         public MessagingDbContext()
         {
@@ -29,8 +30,8 @@ namespace DataLayer
         }
 
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public DbSet<ImageMessage> ImageMessages { get; set; }
         public DbSet<TextMessage> TextMessages { get; set; }
-        public DbSet<User> Users { get; set; }
     }
 }

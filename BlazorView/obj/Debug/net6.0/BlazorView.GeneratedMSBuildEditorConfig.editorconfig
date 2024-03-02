@@ -20,20 +20,48 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Pages/Group/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR3JvdXBcQ3JlYXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Pages/Group/Delete.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR3JvdXBcRGVsZXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Pages/Group/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR3JvdXBcRWRpdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Pages/Group/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR3JvdXBcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Pages/Index.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Pages/User/Create.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxDcmVhdGUucmF6b3I=
+[C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Pages/Users/Create.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlcnNcQ3JlYXRlLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Pages/User/Edit.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxFZGl0LnJhem9y
+[C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Pages/Users/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlcnNcRWRpdC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Pages/User/Index.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlclxJbmRleC5yYXpvcg==
+[C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Pages/Users/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlcnNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Pages/Users/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlcnNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Pages/Users/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcVXNlcnNcUmVnaXN0ZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Shared/Chat.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXENoYXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/ishep/Documents/GitHub/IlievProject/BlazorView/Shared/SurveyPrompt.razor]

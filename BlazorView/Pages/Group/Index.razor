@@ -1,0 +1,79 @@
+﻿@page "/groups"
+@using BlazorView.Services;
+@using BusinessLayer;
+@using ServiceLayer;
+@inject GroupManager groupManager;
+@inject IdentityManager identityManager;
+@inject NavigationManager navigationManager;
+@inject StateContainer<Group> groupContainer;
+
+<h1>Groups</h1>
+
+<p>
+    <a href="groups/create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model == null)
+        {
+            <tr><td>Loading...</td></tr>
+        }
+        else
+        {
+            @foreach (Group item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        <a href="groups/edit" @onclick="(() => SetGroup(item))">Edit</a> |
+                        <a href="groups/details" @onclick="(() => SetGroup(item))">Details</a> |
+                        <a href="groups/delete" @onclick="(() => SetGroup(item))">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@code {
+    ICollection<Group> Model;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadGroups();
+    }
+
+    async Task LoadGroups()
+    {
+        Model = await groupManager.ReadAllAsync(true, false);
+    }
+
+    void SetGroup(Group group)
+    {
+        groupContainer.SetValue(group);
+    }
+
+    async Task OnDelete(int id)
+    {
+        try
+        {
+            await groupManager.DeleteAsync(id);
+            await LoadGroups();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+}
