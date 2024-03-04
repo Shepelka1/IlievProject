@@ -1,0 +1,40 @@
+﻿@page "/user/logout"
+@using System.Security.Principal;
+@using System.Security.Claims;
+@using BlazorView.Services;
+@inject NavigationManager navigationManager;
+@inject AuthenticationStateProvider authenticationStateProvider;
+
+@if (userClaims is null)
+{
+    <h3>You have successfully logged out of the application.</h3>
+}
+
+@code
+{
+    private ClaimsPrincipal userClaims;
+    private AuthenticationState authenticationState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            authenticationState = await authenticationStateProvider.GetAuthenticationStateAsync();
+            userClaims = authenticationState.User;
+            if (userClaims is not null && userClaims.Identity.IsAuthenticated)
+            {
+                var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
+                await customAuthenticationStateProvider.UpdateAuthenticationState(null);
+
+                navigationManager.NavigateTo("/", true);
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+}

@@ -16,13 +16,17 @@
     <div class="col-md-4">
         <MudForm Model="Model">
             <div class="form-group">
-                <MudTextField @bind-value="Model.UserName"
+                <MudTextField @bind-Value="Model.UserName"
                               T="string" class="form-control"
                               Label="Username"
                               Variant="Variant.Outlined"
                               For="@( () => Model.UserName )" 
                               Immediate="true"/>
             </div>
+            <MudSelect T="Role" @bind-Value="Model.Role" Label="Role" AnchorOrigin="Origin.BottomCenter">
+                <MudSelectItem Value=Role.User />
+                <MudSelectItem Value=Role.Admin />
+            </MudSelect>
             <div class="form-group">
                 <MudButton Variant="Variant.Filled"
                            StartIcon="@Icons.Material.Filled.Save"

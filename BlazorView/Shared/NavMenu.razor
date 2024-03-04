@@ -1,4 +1,5 @@
-﻿@using BusinessLayer;
+﻿@using BlazorView.Services;
+@using BusinessLayer;
 @using Microsoft.AspNetCore.Identity;
 @using ServiceLayer;
 @inject GroupManager groupManager;
@@ -16,47 +17,37 @@
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="users">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Users
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="groups">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Groups
-            </NavLink>
-        </div>
-        @foreach(Group item in Groups)
-        {
+    <div class="nav-item px-3">
+        <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+            <span class="oi oi-home" aria-hidden="true"></span> Home
+        </NavLink>
+    </div>
+    <AuthorizeView Roles="Admin">
+        <Authorized>
             <div class="nav-item px-3">
-                <a href ="groups/chat/@item.Id">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span> @item.Name
-                </a>
+                <NavLink class="nav-link" href="users">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Users
+                </NavLink>
             </div>
-        }
-        <AuthorizeView>
-            <Authorized>
-                <p>Hello, @context.User.Identity?.Name!</p>
-            </Authorized>
-            <NotAuthorized>
-                <p>You're not authorized.</p>
-            </NotAuthorized>
-        </AuthorizeView>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="user/create">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Register
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="user/login">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Login
-            </NavLink>
-        </li>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="groups">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Groups
+                </NavLink>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+    <AuthorizeView Roles="User">
+        <Authorized>
+            @foreach(Group item in Groups)
+            {
+                <div class="nav-item px-3">
+                    <a href ="groups/chat/@item.Id">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> @item.Name
+                    </a>
+                </div>
+            }
+        </Authorized>
+    </AuthorizeView>
     </nav>
 </div>
 

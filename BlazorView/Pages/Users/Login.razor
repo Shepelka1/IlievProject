@@ -52,7 +52,8 @@
             var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)authenticationStateProvider;
             await customAuthenticationStateProvider.UpdateAuthenticationState(new UserSession
                 {
-                    UserName = userAccount.UserName
+                    UserName = userAccount.UserName,
+                    Role = userAccount.Role
                 });
             navigationManager.NavigateTo("/", true);
         }

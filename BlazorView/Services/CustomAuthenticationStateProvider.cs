@@ -22,7 +22,8 @@ namespace BlazorView.Services
                     return await Task.FromResult(new AuthenticationState(anonymous));
                 var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, userSession.UserName)
+                    new Claim(ClaimTypes.Name, userSession.UserName),
+                    new Claim(ClaimTypes.Role, userSession.Role.ToString())
                 }, "CustomAuth"));
                 return await Task.FromResult(new AuthenticationState(claimsPrincipal));
             }
@@ -42,7 +43,8 @@ namespace BlazorView.Services
                 await sessionStorage.SetAsync("UserSession", userSession);
                 claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, userSession.UserName)
+                    new Claim(ClaimTypes.Name, userSession.UserName),
+                    new Claim(ClaimTypes.Role, userSession.Role.ToString())
                 }));
             }
             else

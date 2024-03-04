@@ -4,6 +4,7 @@
 @using Microsoft.AspNetCore.Identity;
 @using MudBlazor
 @using ServiceLayer;
+@using System.Security.Claims;
 @inject GroupManager groupManager;
 @inject IdentityManager identityManager;
 @inject UserManager<User> userManager;  
@@ -15,10 +16,6 @@
 
 <h1>@Model.Name</h1>
 
-<p>
-    <a href="groups/create">Create New</a>
-</p>
-<p>@(Id.ToString())</p>
 <table class="table">
     <tbody>
         @if (Model == null)
@@ -81,7 +78,7 @@
 
     string TypedMessage = null;
 
-    System.Security.Claims.ClaimsPrincipal User;
+    ClaimsPrincipal User;
 
     protected override async Task OnInitializedAsync()
     {
@@ -102,27 +99,11 @@
         Model = await groupManager.ReadAsync(Id, true, false);
     }
 
-    void SetGroup(Group group)
-    {
-        groupContainer.SetValue(group);
-    }
-
-    async Task OnDelete(int id)
-    {
-        try
-        {
-            await groupManager.DeleteAsync(id);
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-    }
-
     async Task SendMessage()
     {
-        //await userManager.FindByNameAsync(User.Identity.Name)
-        TextMessage msg = new TextMessage(TypedMessage, null, Model);
-        Model.Messages.Add(msg);
+        User user = await userManager.FindByNameAsync(User.Identity.Name);
+        TextMessage msg = new TextMessage(TypedMessage, user, Model);
+        await groupManager.AddTextMessageAsync(Model, msg);
+        TypedMessage = null;
     }
 }

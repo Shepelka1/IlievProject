@@ -16,6 +16,7 @@ namespace BusinessLayer
         public List<Message> Messages { get; set; }
         public Status Status { get; set; }
         public DateTime CreatedDateTime { get; set; }
+        public Role Role { get; set; }
         public User()
         {
             Groups = new();

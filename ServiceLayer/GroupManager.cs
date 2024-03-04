@@ -39,5 +39,10 @@ namespace ServiceLayer
         {
             await groupContext.DeleteAsync(key);
         }
+
+        public async Task AddTextMessageAsync(Group item, TextMessage message)
+        {
+            await groupContext.AddTextMessageAsync(item, message);
+        }
     }
 }

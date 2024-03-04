@@ -151,6 +151,18 @@ namespace DataLayer
                 throw;
             }
         }
+
+        public async Task<ClaimsPrincipal> LogOutUserAsync(ClaimsPrincipal claimsPrincipal)
+        {
+            if (claimsPrincipal.Identity is not null && claimsPrincipal.Identity.IsAuthenticated)
+            {
+                return new ClaimsPrincipal();
+            }
+
+            // If should always be true when you call this method!
+            return claimsPrincipal;
+        }
+
         public async Task DeleteAsync(string key)
         {
             try

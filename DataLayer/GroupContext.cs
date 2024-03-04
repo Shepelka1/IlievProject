@@ -11,10 +11,12 @@ namespace DataLayer
     public class GroupContext
     {
         public readonly MessagingDbContext dbContext;
+        public readonly TextMessageContext textMessageContext;
 
-        public GroupContext(MessagingDbContext dbContext)
+        public GroupContext(MessagingDbContext dbContext, TextMessageContext textMessageContext)
         {
             this.dbContext = dbContext;
+            this.textMessageContext = textMessageContext;
         }
 
         public async Task CreateAsync(Group item)
@@ -38,7 +40,7 @@ namespace DataLayer
 
                 if (useNavigationalProperties)
                 {
-                    query.Include(g => g.Messages)
+                    query = query.Include(g => g.Messages)
                          .Include(g => g.Users);
                 }
 
@@ -89,6 +91,7 @@ namespace DataLayer
 
                 groupFromDb.Name = item.Name;
                 groupFromDb.CoverImage = item.CoverImage;
+                groupFromDb.Messages = item.Messages;
 
                 if (useNavigationalProperties)
                 {
@@ -131,5 +134,12 @@ namespace DataLayer
                 throw;
             }
         }
+
+        public async Task AddTextMessageAsync(Group item, TextMessage message)
+        {
+            await textMessageContext.CreateAsync(message);
+            await dbContext.SaveChangesAsync();
+        }
+
     }
 }
