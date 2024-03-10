@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MudBlazor.Services;
 using ServiceLayer;
@@ -45,6 +46,9 @@ namespace BlazorView
 
             services.AddScoped<GroupManager, GroupManager>();
             services.AddScoped<GroupContext, GroupContext>();
+
+            services.AddScoped<FriendRequestManager, FriendRequestManager>();
+            services.AddScoped<FriendRequestContext, FriendRequestContext>();
 
             services.AddScoped<TextMessageManager, TextMessageManager>();
             services.AddScoped<TextMessageContext, TextMessageContext>();

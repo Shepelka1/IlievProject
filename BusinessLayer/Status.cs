@@ -9,9 +9,8 @@ namespace BusinessLayer
     [Flags]
     public enum Status
     {
-        Offline,
-        Online,
-        Busy,
-        Sad
+        Received,
+        Accepted,
+        Declined
     }
 }

@@ -1,10 +1,13 @@
 ﻿@using BlazorView.Services;
 @using BusinessLayer;
+@using DataLayer;
 @using Microsoft.AspNetCore.Identity;
 @using ServiceLayer;
 @inject GroupManager groupManager;
+@inject UserManager<User> userManager;
 @inject SignInManager<User> signInManager;
 @inject AuthenticationStateProvider authenticationStateProvider;
+@inject MessagingDbContext dbContext;
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -38,9 +41,18 @@
     </AuthorizeView>
     <AuthorizeView Roles="User">
         <Authorized>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="groups/Create">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Create new group
+                </NavLink>
+            </div>
             @foreach(Group item in Groups)
             {
                 <div class="nav-item px-3">
+                    @if (item.CoverImage != null)
+                    {
+                        <img src="data:image;base64, @System.Convert.ToBase64String(item.CoverImage)" />
+                    }
                     <a href ="groups/chat/@item.Id">
                         <span class="oi oi-list-rich" aria-hidden="true"></span> @item.Name
                     </a>
@@ -58,8 +70,17 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Groups = await groupManager.ReadAllAsync();
+        //(⌐■_■)
+        //( •_•)>⌐■-■
+        //(•_•)
+        await Task.Delay(2000);
         authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        if (authState.User.Identity.IsAuthenticated)
+        {
+            User user = await userManager.FindByNameAsync(authState.User.Identity.Name);
+            dbContext.Entry(user).Collection(u => u.Groups).Load();
+            Groups = user.Groups;
+        }
     }
 
     private bool collapseNavMenu = true;

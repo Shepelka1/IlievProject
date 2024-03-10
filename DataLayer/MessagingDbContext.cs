@@ -26,6 +26,7 @@ namespace DataLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<FriendRequest>().HasOne(q => q.Sender).WithMany(q => q.FriendRequests).HasForeignKey(e => e.SenderId);
             base.OnModelCreating(modelBuilder);
         }
 
@@ -33,5 +34,6 @@ namespace DataLayer
         public DbSet<Message> Messages { get; set; }
         public DbSet<ImageMessage> ImageMessages { get; set; }
         public DbSet<TextMessage> TextMessages { get; set; }
+        public DbSet<FriendRequest> FriendRequests { get; set; }
     }
 }

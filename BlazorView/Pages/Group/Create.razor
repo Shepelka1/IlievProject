@@ -1,12 +1,16 @@
 ﻿@page "/groups/create"
+@using Microsoft.AspNetCore.Identity;
 @using ServiceLayer;
 @using BlazorView.Services;
 @using MudBlazor;
 @using BusinessLayer;
 @using MudBlazor.Services;
+@using System.Security.Claims;
 @inject GroupManager groupManager;
 @inject IdentityManager identityManager;
+@inject UserManager<User> userManager;
 @inject NavigationManager navigationManager;
+@inject AuthenticationStateProvider authenticationState;
 
 <h1>Create</h1>
 
@@ -52,23 +56,41 @@
     </div>
 </div>
 
-<div class="form-group">
-    <MudButton Variant="Variant.Filled"
-               IconColor="Color.Secondary"
-               Size="Size.Large"
-               Href="groups">Back</MudButton>
-</div>
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <div class="form-group">
+            <MudButton Variant="Variant.Filled"
+                       IconColor="Color.Secondary"
+                       Size="Size.Large"
+                       Href="groups">Back</MudButton>
+        </div>
+    </Authorized>
+</AuthorizeView>
+<AuthorizeView Roles="User">
+    <Authorized>
+        <div class="form-group">
+            <MudButton Variant="Variant.Filled"
+                       IconColor="Color.Secondary"
+                       Size="Size.Large"
+                       Href="/">Back</MudButton>
+        </div>
+    </Authorized>
+</AuthorizeView>
 
 @code {
     Group Model = new();
     User SelectedUser = new();
     List<User> SelectedUsers = new();
 
+    ClaimsPrincipal User;
+
     ICollection<User> Users = new List<User>();
 
     protected override async Task OnInitializedAsync()
     {
         Users = await identityManager.ReadAllAsync(false, false);
+        var authState = await authenticationState.GetAuthenticationStateAsync();
+        User = authState.User;
     }
 
     void AddUser()
@@ -80,10 +102,16 @@
 
     private async Task<IEnumerable<User>> SearchUsers(string value)
     {
-        if (string.IsNullOrEmpty(value))
-            return Users;
+        User currentUser = await userManager.FindByNameAsync(User.Identity.Name);
 
-        return Users.Where( u=> u.UserName.StartsWith(value, StringComparison.InvariantCultureIgnoreCase));
+        if (currentUser == null)
+            return new List<User>();
+
+        if (string.IsNullOrEmpty(value))
+            return Users.Intersect(currentUser.Friends);
+
+        return Users.Intersect(currentUser.Friends).Where(u => u.UserName.StartsWith(value, StringComparison.InvariantCultureIgnoreCase));
+
     }
 
     private async Task CreateGroup()

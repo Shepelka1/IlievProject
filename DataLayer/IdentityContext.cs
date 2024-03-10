@@ -96,7 +96,6 @@ namespace DataLayer
                 userFromDb.UserName = item.UserName;
                 userFromDb.ProfilePicture = item.ProfilePicture;
                 userFromDb.Password = item.Password;
-                userFromDb.Status = item.Status;
 
                 if (useNavigationalProperties)
                 {

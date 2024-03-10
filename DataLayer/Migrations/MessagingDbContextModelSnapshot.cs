@@ -22,6 +22,29 @@ namespace DataLayer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("BusinessLayer.FriendRequest", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ReceiverId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SenderId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("FriendRequests");
+                });
+
             modelBuilder.Entity("BusinessLayer.Group", b =>
                 {
                     b.Property<int>("Id")
@@ -133,11 +156,11 @@ namespace DataLayer.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -152,6 +175,8 @@ namespace DataLayer.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -329,6 +354,21 @@ namespace DataLayer.Migrations
                     b.HasDiscriminator().HasValue("TextMessage");
                 });
 
+            modelBuilder.Entity("BusinessLayer.FriendRequest", b =>
+                {
+                    b.HasOne("BusinessLayer.User", "Receiver")
+                        .WithMany()
+                        .HasForeignKey("ReceiverId");
+
+                    b.HasOne("BusinessLayer.User", "Sender")
+                        .WithMany("FriendRequests")
+                        .HasForeignKey("SenderId");
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("BusinessLayer.Message", b =>
                 {
                     b.HasOne("BusinessLayer.Group", "Group")
@@ -342,6 +382,13 @@ namespace DataLayer.Migrations
                     b.Navigation("Group");
 
                     b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("BusinessLayer.User", b =>
+                {
+                    b.HasOne("BusinessLayer.User", null)
+                        .WithMany("Friends")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("GroupUser", b =>
@@ -417,6 +464,10 @@ namespace DataLayer.Migrations
 
             modelBuilder.Entity("BusinessLayer.User", b =>
                 {
+                    b.Navigation("FriendRequests");
+
+                    b.Navigation("Friends");
+
                     b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618

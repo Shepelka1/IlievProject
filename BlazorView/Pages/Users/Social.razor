@@ -1,0 +1,239 @@
+﻿@page "/user/social"
+@using BusinessLayer;
+@using Microsoft.AspNetCore.Identity;
+@using MudBlazor
+@using ServiceLayer;
+@using System.Security.Claims;
+@inject IdentityManager identityManager;
+@inject UserManager<User> userManager;
+@inject FriendRequestManager friendRequestManger;
+@inject NavigationManager navigationManager;
+@inject AuthenticationStateProvider authenticationState;
+
+<h3>Social</h3>
+
+<div id="search-div">
+    <MudGrid>
+        <MudItem xs="12">
+            <MudForm Model="UserModel">
+                <div class="col-md-5 col-sm-12">
+                    <MudTextField T="string" Label="Search" @bind-Value="SearchedName"
+                                        ResetValueOnEmptyText="true"
+                                        CoerceText="true" CoerceValue="false"
+                                        Variant="Variant.Outlined"
+                                        Immediate="true" />
+                </div>
+                <div class="form-group">
+                    <MudButton Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.Save"
+                               IconColor="Color.Primary"
+                               Size="Size.Large"
+                               OnClick="SendInvite">Send friend request</MudButton>
+                </div>
+            </MudForm>
+        </MudItem>
+    </MudGrid>
+</div>
+<p>Outbound</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Sender
+            </th>
+            <th>
+                Receiver
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (RequestModel == null && User != null)
+        {
+            <tr><td>Loading...</td></tr>
+        }
+        else
+        {
+            @foreach (FriendRequest request in OutboundRequests)
+            {
+                <tr>
+                    <td>
+                        @request.Sender.UserName
+                    </td>
+                    <td>
+                        @request.Receiver.UserName
+                    </td>
+                    <td>
+                        @request.Status.ToString();
+                    </td>
+                    <td></td>
+                    <td>
+                        <a href="user/social" @onclick="(() => DeleteEntry(request.Id))">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<p>Inbound</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Sender
+            </th>
+            <th>
+                Receiver
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (RequestModel == null && User != null)
+        {
+            <tr><td>Loading...</td></tr>
+        }
+        else
+        {
+            @foreach (FriendRequest request in InboundRequests)
+            {
+                <tr>
+                    <td>
+                        @request.Sender.UserName
+                    </td>
+                    <td>
+                        @request.Receiver.UserName
+                    </td>
+                    <td>
+                        @request.Status.ToString();
+                    </td>
+                    <td>
+                        <a href="user/social" @onclick="(() => AcceptRequest(request.Id))">Accept</a>
+                    </td>
+                    <td>
+                        <a href="user/social" @onclick="(() => DeleteEntry(request.Id))">Decline</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<p>Current friends</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (FriendModel == null && User != null)
+        {
+            <tr><td>Loading...</td></tr>
+        }
+        else
+        {
+            @foreach (User friend in FriendModel)
+            {
+                <tr>
+                    <td>
+                        @friend.UserName
+                    </td>
+                    <td>
+                        <a href="user/social" @onclick="(() => DeleteFriend(friend.UserName))">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@code {
+    ICollection<User> UserModel;
+    ICollection<FriendRequest> RequestModel;
+    ICollection<User> FriendModel = new List<User>();
+
+    ICollection<FriendRequest> OutboundRequests = new List<FriendRequest>();
+    ICollection<FriendRequest> InboundRequests = new List<FriendRequest>();
+
+    ClaimsPrincipal User;
+
+    string SearchedName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        UserModel = await identityManager.ReadAllAsync(true, false);
+        var authState = await authenticationState.GetAuthenticationStateAsync();
+        User = authState.User;
+        if (User != null)
+        {            
+            await LoadRequestModel();
+        }
+    }
+
+    async Task SendInvite()
+    {
+        User receiver = await userManager.FindByNameAsync(SearchedName);
+        User sender = await userManager.FindByNameAsync(User.Identity.Name);
+        if(sender != null && receiver != null)
+        {          
+            FriendRequest request = new FriendRequest(sender, receiver, Status.Received);
+            await friendRequestManger.CreateAsync(request);
+        }
+        await LoadRequestModel();
+    }
+
+    async Task DeleteEntry(string Id)
+    {
+        await friendRequestManger.DeleteAsync(Id);
+        await LoadRequestModel();
+    }
+
+    async Task AcceptRequest(string id)
+    {
+        User currentUser = await userManager.FindByNameAsync(User.Identity.Name);
+        FriendRequest request = await friendRequestManger.ReadAsync(id, true, false);
+
+        if (request == null)
+            return;
+
+        if (currentUser.Friends.Contains(request.Sender))
+            return;
+
+        request.Status = Status.Accepted;
+        currentUser.Friends.Add(request.Sender);
+        await identityManager.UpdateAsync(currentUser);
+        await LoadRequestModel();
+    }
+
+    async Task DeleteFriend(string name)
+    {
+        User friend = await userManager.FindByNameAsync(name);
+        User currentUser = await userManager.FindByNameAsync(User.Identity.Name);
+        if(friend != null)
+        {
+            currentUser.Friends.Remove(friend);
+            await identityManager.UpdateAsync(currentUser);
+        }
+    }
+
+    async Task LoadRequestModel()
+    {
+        RequestModel = await friendRequestManger.ReadAllAsync(true, false);
+        OutboundRequests = RequestModel.Where(r => r.Sender.UserName == User.Identity.Name).ToList();
+        InboundRequests = RequestModel.Where(r => r.Receiver.UserName == User.Identity.Name).ToList();
+        User currentUser = await userManager.FindByNameAsync(User.Identity.Name);
+        FriendModel = currentUser.Friends;
+    }
+}

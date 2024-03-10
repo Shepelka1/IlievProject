@@ -10,11 +10,18 @@
 @inject UserManager<User> userManager;  
 @inject SignInManager<User> signInManager;
 @inject TextMessageManager textMessageManager;
+@inject ImageMessageManager imageMessageManager;
 @inject NavigationManager navigationManager;
 @inject StateContainer<Group> groupContainer;
 @inject AuthenticationStateProvider authenticationState;
 
 <h1>@Model.Name</h1>
+
+@if(Model != null)
+{   
+    <a href="groups/edit" @onclick="(() => SetGroup(Model))">Edit | </a>
+    <a href="groups/delete" @onclick="(() => SetGroup(Model))">Delete</a>
+}
 
 <table class="table">
     <tbody>
@@ -26,19 +33,48 @@
         {
             @foreach (Message item in Model.Messages)
             {
-                <tr>
-                    <td>
-                        @if (item is TextMessage)
-                        {
-                            TempTextMsg = (TextMessage)item;
-                            @TempTextMsg.Text;
-                        } else
-                        {
-                            TempImgMsg = (ImageMessage)item;
-                            @TempImgMsg.Description;
-                        }
-                    </td>
-                </tr>
+                if(item.Sender.UserName == User.Identity.Name)
+                {
+                    <tr style="position: relative; left: 30px">
+                        <td>
+                            @if (item is TextMessage)
+                            {
+                                TempTextMsg = (TextMessage)item;
+                                @TempTextMsg.Text;
+                            } else
+                            {
+                                TempImgMsg = (ImageMessage)item;
+                                @if (TempImgMsg.Image != null)
+                                {
+                                    <img src="data:image;base64, @System.Convert.ToBase64String(TempImgMsg.Image)" />
+                                }
+                                @TempImgMsg.Description;
+                            }
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr style="position: relative; right: 30px">
+                        <td>
+                            @if (item is TextMessage)
+                            {
+                                TempTextMsg = (TextMessage)item;
+                                @TempTextMsg.Text;
+                            }
+                            else
+                            {
+                                TempImgMsg = (ImageMessage)item;
+                                @if (TempImgMsg.Image != null)
+                                {
+                                    <img src="data:image;base64, @System.Convert.ToBase64String(TempImgMsg.Image)" />
+                                }
+                                @TempImgMsg.Description;
+                            }
+                        </td>
+                    </tr>
+                }
+
             }
         }
     </tbody>
@@ -61,6 +97,15 @@
                                Size="Size.Large"
                                OnClick="SendMessage">Send</MudButton>
                 </div>
+                <MudFileUpload T="IBrowserFile" FilesChanged="UploadImage">
+                    <ButtonTemplate>
+                        <MudFab HtmlTag="label"
+                                Color="Color.Secondary"
+                                StartIcon="@Icons.Material.Filled.Image"
+                                Label="Load picture"
+                                for="@context.Id" />
+                    </ButtonTemplate>
+                </MudFileUpload>
             </MudPaper>
         </MudForm>
     </MudItem>
@@ -105,5 +150,19 @@
         TextMessage msg = new TextMessage(TypedMessage, user, Model);
         await groupManager.AddTextMessageAsync(Model, msg);
         TypedMessage = null;
+    }
+
+    private async Task UploadImage(IBrowserFile uploadedFile)
+    {
+            await using var memoryStream = new MemoryStream();
+            await uploadedFile.OpenReadStream().CopyToAsync(memoryStream);
+            User user = await userManager.FindByNameAsync(User.Identity.Name);
+            ImageMessage msg = new ImageMessage(memoryStream.ToArray(), TypedMessage, user, Model);
+            await imageMessageManager.CreateAsync(msg);
+    }
+
+    void SetGroup(Group group)
+    {
+        groupContainer.SetValue(group);
     }
 }

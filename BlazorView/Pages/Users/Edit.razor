@@ -23,6 +23,24 @@
                               For="@( () => Model.UserName )" 
                               Immediate="true"/>
             </div>
+
+            @if(Model.ProfilePicture != null)
+            {
+                <img src="data:image;base64, @System.Convert.ToBase64String(Model.ProfilePicture)"/>
+            }
+
+            <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
+                <ButtonTemplate>
+                    <MudFab HtmlTag="label"
+                            Color="Color.Secondary"
+                            StartIcon="@Icons.Material.Filled.Image"
+                            Label="Load picture"
+                            for="@context.Id" />
+                </ButtonTemplate>
+            </MudFileUpload>
+
+            <p>Max. 64 X 64</p>
+
             <MudSelect T="Role" @bind-Value="Model.Role" Label="Role" AnchorOrigin="Origin.BottomCenter">
                 <MudSelectItem Value=Role.User />
                 <MudSelectItem Value=Role.Admin />
@@ -51,6 +69,16 @@
     protected override async Task OnInitializedAsync()
     {
         Model = userContainer.Value;
+    }
+
+    private async Task UploadFiles(IBrowserFile uploadedFile)
+    {
+        if(uploadedFile.Size <= 4096)
+        {       
+            await using var memoryStream = new MemoryStream();
+            await uploadedFile.OpenReadStream().CopyToAsync(memoryStream);
+            Model.ProfilePicture = memoryStream.ToArray();
+        }
     }
 
     private async Task EditUser()

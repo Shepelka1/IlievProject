@@ -24,6 +24,23 @@
                               Immediate="true"
                               For="@( () => Model.Name )" />
             </div>
+
+            @if (Model.CoverImage != null)
+            {
+                <img src="data:image;base64, @System.Convert.ToBase64String(Model.CoverImage)" />
+            }
+
+            <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
+                <ButtonTemplate>
+                    <MudFab HtmlTag="label"
+                            Color="Color.Secondary"
+                            StartIcon="@Icons.Material.Filled.Image"
+                            Label="Load picture"
+                            for="@context.Id" />
+                </ButtonTemplate>
+            </MudFileUpload>
+
+            <p>Max. 64 X 64</p>
             <div class="form-group">
                 <div class="col-md-5 col-sm-12">
                     <MudAutocomplete T="User" Label="Users" @bind-Value="SelectedUser" SearchFunc="@SearchUsers"
@@ -54,12 +71,26 @@
     </div>
 </div>
 
-<div class="form-group">
-    <MudButton Variant="Variant.Filled"
-               IconColor="Color.Secondary"
-               Size="Size.Large"
-               Href="groups">Back</MudButton>
-</div>
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <div class="form-group">
+            <MudButton Variant="Variant.Filled"
+                       IconColor="Color.Secondary"
+                       Size="Size.Large"
+                       Href="groups">Back</MudButton>
+        </div>
+    </Authorized>
+</AuthorizeView>
+<AuthorizeView Roles="User">
+    <Authorized>
+        <div class="form-group">
+            <MudButton Variant="Variant.Filled"
+                       IconColor="Color.Secondary"
+                       Size="Size.Large"
+                       Href="/">Back</MudButton>
+        </div>
+    </Authorized>
+</AuthorizeView>
 
 @code {
     Group Model = new();
@@ -90,9 +121,19 @@
         return Users.Where(u => u.UserName.StartsWith(value, StringComparison.InvariantCultureIgnoreCase));
     }
 
+    private async Task UploadFiles(IBrowserFile uploadedFile)
+    {
+        if (uploadedFile.Size <= 4096)
+        {
+            await using var memoryStream = new MemoryStream();
+            await uploadedFile.OpenReadStream().CopyToAsync(memoryStream);
+            Model.CoverImage = memoryStream.ToArray();
+        }
+    }
+
     private async Task EditGroup()
     {
         await groupManager.UpdateAsync(Model);
-        navigationManager.NavigateTo("groups", true);
+        navigationManager.NavigateTo("/", true);
     }
 }
