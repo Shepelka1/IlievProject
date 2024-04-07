@@ -26,9 +26,8 @@ namespace BusinessLayer
             Messages = new();
         }
 
-        public Group(int id, string name, byte[] coverImage, List<User> users, List<Message> messages)
+        public Group(string name, byte[] coverImage, List<User> users, List<Message> messages) : this()
         {
-            Id = id;
             Name = name;
             CoverImage = coverImage;
             Users = users;
